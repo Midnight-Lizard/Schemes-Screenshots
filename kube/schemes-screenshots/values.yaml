@@ -1,0 +1,10 @@
+replicaCount: 1
+image: schemes-screenshots:latest
+pullPolicy: IfNotPresent
+service:
+  name: schemes-screenshots
+  type: NodePort
+  externalPort: 80
+  internalPort: 5000
+env:
+  ASPNETCORE_URLS: http://*:5000

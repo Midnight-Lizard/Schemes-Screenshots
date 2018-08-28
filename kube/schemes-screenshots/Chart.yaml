@@ -1,0 +1,4 @@
+apiVersion: v1
+description: Midnight Lizard Color Schemes screenshots generator
+name: schemes-screenshots
+version: 0.1.0
