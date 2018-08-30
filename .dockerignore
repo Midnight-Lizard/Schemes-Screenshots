@@ -3,6 +3,7 @@
 **/.vscode
 **/.vs
 **/.git
+**/launchSettings.json
 **/Dockerfile
 **/node_modules/
 **/dist/
@@ -15,4 +16,6 @@
 **/LICENSE
 **/license
 **/.local-chromium/
+**/wwwroot/Extension/
+**/wwwroot/Images/
 !/shell/entrypoint.sh

@@ -331,5 +331,5 @@ ASALocalRun/
 
 
 /app/.local-chromium/
-/app/extension/
-/app/Extension/
+/app/wwwroot/Extension/
+/app/wwwroot/Images/

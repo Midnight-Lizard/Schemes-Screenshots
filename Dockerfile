@@ -12,10 +12,10 @@ RUN dotnet publish -c ${DOTNET_CONFIG} -o ./results
 #===========================================#
 #				DOTNET	TEST				#
 #===========================================#
-#FROM microsoft/dotnet:2.1-sdk as dotnet-test
-#WORKDIR /test
-#COPY --from=dotnet-build /build .
-#RUN dotnet test -c Test
+FROM microsoft/dotnet:2.1-sdk as dotnet-test
+WORKDIR /test
+COPY --from=dotnet-build /build .
+RUN dotnet test -c Test
 
 #===========================================#
 #				IMAGE	BUILD				#
@@ -45,6 +45,7 @@ RUN groupadd -r pptruser && useradd -r -g pptruser -G audio,video pptruser \
     && chown -R pptruser:pptruser /app \
     && find /app -type d -exec chmod 2775 {} \; \
     && find /app -type f -exec chmod ug+rw {} \;
+RUN mkdir -p /app/wwwroot
 # Run everything after as non-privileged user.
 USER pptruser
 CMD ./entrypoint.sh

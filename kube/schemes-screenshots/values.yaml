@@ -8,3 +8,17 @@ service:
   internalPort: 5000
 env:
   ASPNETCORE_URLS: http://*:5000
+  CHROME_EXECUTABLE_PATH: /usr/bin/google-chrome-unstable
+  CHROME_KILL_EXISTING_PROCESSES: google-chrome-unstable
+  CHROME_FLAGS: --disable-gpu
+  EXTENSION_DOWNLOAD_URL: https://github.com/Midnight-Lizard/Midnight-Lizard/releases/download/latest/chrome.zip
+  EXTENSION_ARCHIVE_PATH: ./ext/ml
+  EXTENSION_EXTRACT_PATH: ./ext/ml.zip
+  EXTENSION_DEFAULT_COLOR_SCHEME_ID: dimmedDust
+  SCREENSHOT_OUT_DIR: ./img
+  SCREENSHOT_SIZES: 1280x800x200,1120x700x200,960x600x200,800x500x200,640x400x200
+  SCREENSHOT_URLS: "\
+    https://www.google.com/search?hl=en&q={colorSchemeName},\
+    https://www.google.com/search?hl=en&tbm=isch&q={colorSchemeName},\
+    https://en.wikipedia.org/wiki/Orion_Nebula,\
+    "

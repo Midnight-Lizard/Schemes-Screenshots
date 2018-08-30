@@ -16,4 +16,7 @@ kubectl config use-context minikube
 docker push $IMAGE
 helm upgrade --install --set image=$IMAGE \
     --set env.ASPNETCORE_ENVIRONMENT=Development \
+    --set env.SCREENSHOT_SIZES=1280x800x200~640x400x200 \
+    --set env.SCREENSHOT_URLS=https://www.google.com/search?hl\=en\&q\={colorSchemeName} \
+    --set env.SCREENSHOT_OUT_DIR=./wwwroot \
     $PROJ ../kube/$PROJ

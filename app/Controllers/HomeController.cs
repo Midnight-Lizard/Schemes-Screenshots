@@ -1,25 +1,71 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using MidnightLizard.Schemes.Screenshots.Configuration;
+using MidnightLizard.Schemes.Screenshots.Models;
+using MidnightLizard.Schemes.Screenshots.Services;
+using Newtonsoft.Json.Linq;
 using PuppeteerSharp;
 using System;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace MidnightLizard.Schemes.Screenshots.Controllers
 {
-    [Route("[controller]")]
+    [Route("[controller]/[action]")]
     [ApiController]
     public class HomeController : ControllerBase
     {
-        public async Task<FileResult> Index()
-        {
-            var extractPath = await DownloadExtension();
-            await this.ReplaceDefaultColorScheme(extractPath);
+        private readonly IExtensionManager extensionManager;
+        private readonly IScreenshotGenerator screenshotGenerator;
+        private readonly IOptions<BrowserConfig> browserConfig;
+        private readonly IOptions<ExtensionConfig> extensionConfig;
 
-            var filePath = await TakeScreenshot(extractPath);
-            return this.File(filePath, "image/png");
+        public HomeController(
+            IExtensionManager extensionManager,
+            IScreenshotGenerator screenshotGenerator,
+            IOptions<BrowserConfig> browserConfig,
+            IOptions<ExtensionConfig> extensionConfig)
+        {
+            this.extensionManager = extensionManager;
+            this.screenshotGenerator = screenshotGenerator;
+            this.browserConfig = browserConfig;
+            this.extensionConfig = extensionConfig;
+        }
+
+        public async Task<ActionResult> WarmUp()
+        {
+            await this.extensionManager.DownloadExtension();
+            this.extensionManager.ExtractExtension();
+            await this.screenshotGenerator.WarmUpAsync(new BrowserManager());
+            return Ok();
+        }
+
+        public async Task<ActionResult> Generate()
+        {
+            await this.extensionManager.DownloadExtension();
+            this.extensionManager.ExtractExtension();
+            await this.extensionManager.ReplaceDefaultColorScheme(JObject.Parse(this.newColorScheme));
+
+            this.screenshotGenerator.CleanScreenshotsOutputFolder();
+
+            var results = await this.screenshotGenerator.GenerateScreenshots(
+                new BrowserManager(),
+                new SchemePublishedEvent
+                {
+                    AggregateId = "agg-test-id",
+                    ColorScheme = new ColorScheme
+                    {
+                        colorSchemeId = "cs-test-id",
+                        colorSchemeName = "cs-test-name"
+                    }
+                });
+
+            return this.Content(string.Join("<br/>", results
+                .Select(x => $"<a style=\"font-size:20px\" href=\"{x.FilePath.Replace("./wwwroot", "")}\">{x.Url} -- {x.Size.Width}x{x.Size.Height}</a>")), "text/html");
         }
 
         private async Task ReplaceDefaultColorScheme(string extractPath)
@@ -78,7 +124,7 @@ namespace MidnightLizard.Schemes.Screenshots.Controllers
             return extractPath;
         }
 
-        private readonly string newColorScheme = @"
+        private readonly string newColorScheme = @"{
             ""colorSchemeId"": ""dimmedDust"",
             ""colorSchemeName"": ""Dimmed Dust"",
             ""runOnThisSite"": true,
@@ -141,6 +187,6 @@ namespace MidnightLizard.Schemes.Screenshots.Controllers
             ""scrollbarGrayHue"": 45,
             ""scrollbarSize"": 10,
             ""scrollbarStyle"": ""true""
-";
+}";
     }
 }
