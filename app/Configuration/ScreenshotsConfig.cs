@@ -10,5 +10,7 @@ namespace MidnightLizard.Schemes.Screenshots.Configuration
         public string SCREENSHOT_URLS { get; set; }
         public string SCREENSHOT_SIZES { get; set; }
         public string SCREENSHOT_OUT_DIR { get; set; }
+        public string SCREENSHOT_URL_TITLES { get; set; }
+        public string SCREENSHOT_CDN_ID_TEMPLATE { get; set; }
     }
 }

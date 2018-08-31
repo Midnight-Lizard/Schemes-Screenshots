@@ -21,17 +21,20 @@ namespace MidnightLizard.Schemes.Screenshots.Controllers
     {
         private readonly IExtensionManager extensionManager;
         private readonly IScreenshotGenerator screenshotGenerator;
+        private readonly IScreenshotUploader screenshotUploader;
         private readonly IOptions<BrowserConfig> browserConfig;
         private readonly IOptions<ExtensionConfig> extensionConfig;
 
         public HomeController(
             IExtensionManager extensionManager,
             IScreenshotGenerator screenshotGenerator,
+            IScreenshotUploader screenshotUploader,
             IOptions<BrowserConfig> browserConfig,
             IOptions<ExtensionConfig> extensionConfig)
         {
             this.extensionManager = extensionManager;
             this.screenshotGenerator = screenshotGenerator;
+            this.screenshotUploader = screenshotUploader;
             this.browserConfig = browserConfig;
             this.extensionConfig = extensionConfig;
         }
@@ -63,6 +66,11 @@ namespace MidnightLizard.Schemes.Screenshots.Controllers
                         colorSchemeName = "cs-test-name"
                     }
                 });
+
+            foreach (var shot in results)
+            {
+                screenshotUploader.UploadScreenshot(shot);
+            }
 
             return this.Content(string.Join("<br/>", results
                 .Select(x => $"<a style=\"font-size:20px\" href=\"{x.FilePath.Replace("./wwwroot", "")}\">{x.Url} -- {x.Size.Width}x{x.Size.Height}</a>")), "text/html");

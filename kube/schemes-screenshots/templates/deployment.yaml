@@ -32,7 +32,7 @@ spec:
               path: /status/isready
               port: {{ .Values.service.internalPort }}
             initialDelaySeconds: 60
-            periodSeconds: 60
+            periodSeconds: 45
             timeoutSeconds: 10
           readinessProbe:
             httpGet:
@@ -42,6 +42,26 @@ spec:
             periodSeconds: 20
             timeoutSeconds: 5
           env:
+            - name: CLOUDINARY_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ template "name" . }}-cloudinary-secret
+                  key: cloudinaryUrl
+            - name: SCREENSHOT_CDN_ID_TEMPLATE
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ template "name" . }}-config
+                  key: cdnIdTemplate
+            - name: SCREENSHOT_URLS
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ template "name" . }}-config
+                  key: urls
+            - name: SCREENSHOT_URL_TITLES
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ template "name" . }}-config
+                  key: titles
             {{- range $key, $val := .Values.env }}
             - name: {{ $key }}
               value: {{ $val | quote }}

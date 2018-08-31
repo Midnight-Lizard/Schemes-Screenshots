@@ -42,10 +42,16 @@ namespace MidnightLizard.Schemes.Screenshots.Services
                 var config = this.screenshotsConfig.Value;
                 await browserManager.LaunchAsync(this.browserConfig.Value, this.extensionConfig.Value);
                 var colorSchemeNameEncoded = WebUtility.UrlEncode(@event.ColorScheme.colorSchemeName);
-                foreach (var url in config.SCREENSHOT_URLS.Split(',', '~'))
+
+                foreach (var (url, title) in from url in config.SCREENSHOT_URLS.Split(',', '~', StringSplitOptions.RemoveEmptyEntries)
+                                                .Select((url, i) => (url, i))
+                                             join title in config.SCREENSHOT_URL_TITLES.Split(',', '~', StringSplitOptions.RemoveEmptyEntries)
+                                                 .Select((title, i) => (title, i))
+                                                 on url.i equals title.i
+                                             select (url.url, title.title))
                 {
                     //var urlWithName = url.Replace($"{{{nameof(ColorScheme.colorSchemeName)}}}", colorSchemeNameEncoded);
-                    foreach (var size in config.SCREENSHOT_SIZES.Split(',', '~')
+                    foreach (var size in config.SCREENSHOT_SIZES.Split(',', '~', StringSplitOptions.RemoveEmptyEntries)
                         .Select(sizeStr => new ScreenshotSize(sizeStr)))
                     {
                         // TODO: remove this and uncomment above
@@ -56,6 +62,7 @@ namespace MidnightLizard.Schemes.Screenshots.Services
                         {
                             AggregateId = @event.AggregateId,
                             Url = urlWithName,
+                            Title = title,
                             Size = size,
                             FilePath = outFilePath
                         });

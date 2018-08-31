@@ -6,6 +6,13 @@ service:
   type: NodePort
   externalPort: 80
   internalPort: 5000
+secrets:
+  cloudinaryUrl: "base64 encoded 'cloudinary://clientId:clientSecrete@cloudName'"
+screenshotUrls:
+  Google Search: https://www.google.com/search?hl=en&q={colorSchemeName}
+  Google Search Images: https://www.google.com/search?hl=en&tbm=isch&q={colorSchemeName}
+  Wikipedia: https://en.wikipedia.org/wiki/Orion_Nebula
+screenshotCdnIdTemplate: cs/{id}/{title}/{size}
 env:
   ASPNETCORE_URLS: http://*:5000
   CHROME_EXECUTABLE_PATH: /usr/bin/google-chrome-unstable
@@ -17,8 +24,3 @@ env:
   EXTENSION_DEFAULT_COLOR_SCHEME_ID: dimmedDust
   SCREENSHOT_OUT_DIR: ./img
   SCREENSHOT_SIZES: 1280x800x200,1120x700x200,960x600x200,800x500x200,640x400x200
-  SCREENSHOT_URLS: "\
-    https://www.google.com/search?hl=en&q={colorSchemeName},\
-    https://www.google.com/search?hl=en&tbm=isch&q={colorSchemeName},\
-    https://en.wikipedia.org/wiki/Orion_Nebula,\
-    "

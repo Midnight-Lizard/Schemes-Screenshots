@@ -28,6 +28,7 @@ namespace MidnightLizard.Schemes.Screenshots
 
             services.AddTransient<IExtensionManager, ExtensionManager>();
             services.AddTransient<IScreenshotGenerator, ScreenshotGenerator>();
+            services.AddTransient<IScreenshotUploader, ScreenshotUploader>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

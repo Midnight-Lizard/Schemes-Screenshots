@@ -2,6 +2,7 @@
 {
     public class Screenshot
     {
+        public string Title { get; set; }
         public string AggregateId { get; set; }
         public ScreenshotSize Size { get; set; }
         public string Url { get; set; }

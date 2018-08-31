@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "name" . }}-config
+  labels:
+    app: {{ template "name" . }}
+    chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data:
+  urls: {{ .Values.screenshotUrls | keys | join "," | quote }}
+  titles: {{ .Values.screenshotUrls | values | join "," | quote }}
+  cdnIdTemplate: {{ .Values.screenshotCdnIdTemplate | quote }}

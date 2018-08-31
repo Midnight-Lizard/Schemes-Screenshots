@@ -4,6 +4,7 @@ using MidnightLizard.Schemes.Screenshots.Configuration;
 using MidnightLizard.Schemes.Screenshots.Models;
 using MidnightLizard.Testing.Utilities;
 using NSubstitute;
+using System;
 
 namespace MidnightLizard.Schemes.Screenshots.Services
 {
@@ -27,7 +28,8 @@ namespace MidnightLizard.Schemes.Screenshots.Services
                     "https://www.google.com/search?hl=en&q={colorSchemeName}," +
                     "https://www.google.com/search?hl=en&tbm=isch&q={colorSchemeName},",
             SCREENSHOT_SIZES = "1280x800x200,960x600x200,480x300x200",
-            SCREENSHOT_OUT_DIR = "./img"
+            SCREENSHOT_OUT_DIR = "./img",
+            SCREENSHOT_URL_TITLES= "Google Search,Google Search Images"
         };
         private readonly SchemePublishedEvent publishedEvent = new SchemePublishedEvent
         {
@@ -77,8 +79,8 @@ namespace MidnightLizard.Schemes.Screenshots.Services
             {
                 var results = await this.generator.GenerateScreenshots(this.browserManager, this.publishedEvent);
 
-                var totalShots = this.screenshotsConfig.SCREENSHOT_SIZES.Split(',').Length *
-                    this.screenshotsConfig.SCREENSHOT_URLS.Split(',').Length;
+                var totalShots = this.screenshotsConfig.SCREENSHOT_SIZES.Split(',', StringSplitOptions.RemoveEmptyEntries).Length *
+                    this.screenshotsConfig.SCREENSHOT_URLS.Split(',', StringSplitOptions.RemoveEmptyEntries).Length;
 
                 results.Should().HaveCount(totalShots);
             }

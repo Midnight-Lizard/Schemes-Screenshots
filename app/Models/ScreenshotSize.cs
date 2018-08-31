@@ -19,5 +19,10 @@ namespace MidnightLizard.Schemes.Screenshots.Models
             this.Height = size[1];
             this.Scale = size[2];
         }
+
+        public override string ToString()
+        {
+            return $"{this.Width}x{this.Height}";
+        }
     }
 }
