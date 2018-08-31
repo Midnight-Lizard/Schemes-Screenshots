@@ -14,7 +14,7 @@ namespace MidnightLizard.Schemes.Screenshots.Services
     {
         Task DownloadExtension();
         void ExtractExtension();
-        Task ReplaceDefaultColorScheme(JObject newColorSchemeJson);
+        Task ReplaceDefaultColorScheme(JToken newColorSchemeJson);
     }
 
     public class ExtensionManager : IExtensionManager
@@ -52,7 +52,7 @@ namespace MidnightLizard.Schemes.Screenshots.Services
                 true);
         }
 
-        public async Task ReplaceDefaultColorScheme(JObject newColorSchemeJson)
+        public async Task ReplaceDefaultColorScheme(JToken newColorSchemeJson)
         {
             var config = this.extensionConfig.Value;
             var contentScriptFilePath = Path.Combine(config.EXTENSION_EXTRACT_PATH, "./js/content-script.js");

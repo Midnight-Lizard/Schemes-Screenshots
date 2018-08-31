@@ -1,22 +1,30 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using MidnightLizard.Schemes.Screenshots.Services;
 
 namespace MidnightLizard.Schemes.Screenshots.Controllers
 {
     [Route("[controller]/[action]")]
     public class StatusController : Controller
     {
+        private readonly IMessagingQueue queue;
+
+        public StatusController(IMessagingQueue eventsQueue)
+        {
+            this.queue = eventsQueue;
+        }
+
         public IActionResult IsReady()
         {
-            return Ok("schemes commander is ready");
+            return this.Ok("schemes screenshot generator is ready");
         }
 
         public IActionResult IsAlive()
         {
-            return Ok("schemes commander is alive");
+            if (this.queue.CheckStatus())
+            {
+                return this.Ok("schemes screenshot generator is alive");
+            }
+            return this.BadRequest("schemes screenshot generator has too many errors and should be restarted");
         }
     }
 }

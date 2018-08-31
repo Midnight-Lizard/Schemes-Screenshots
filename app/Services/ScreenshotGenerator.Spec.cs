@@ -12,16 +12,8 @@ namespace MidnightLizard.Schemes.Screenshots.Services
     {
         private readonly ScreenshotGenerator generator;
         private readonly IBrowserManager browserManager = Substitute.For<IBrowserManager>();
-        private readonly BrowserConfig browserConfig = new BrowserConfig
-        {
-            CHROME_EXECUTABLE_PATH = "/chrome",
-            CHROME_FLAGS = "--test",
-            CHROME_KILL_EXISTING_PROCESSES = ""
-        };
-        private readonly ExtensionConfig extensionConfig = new ExtensionConfig
-        {
-            EXTENSION_EXTRACT_PATH = "/test"
-        };
+        private readonly BrowserConfig browserConfig = new BrowserConfig();
+        private readonly ExtensionConfig extensionConfig = new ExtensionConfig();
         private readonly ScreenshotsConfig screenshotsConfig = new ScreenshotsConfig
         {
             SCREENSHOT_URLS =
