@@ -6,23 +6,26 @@ using System.Threading.Tasks;
 
 namespace MidnightLizard.Schemes.Screenshots.EventHandlers
 {
-    public interface IBaseSchemeEventHandler
+    public interface IRootSchemeEventHandler
     {
         Task Init();
         Task HandleTransportEvent(string transportEventJsonString);
     }
 
-    public class BaseSchemeEventHandler : IBaseSchemeEventHandler
+    public class RootSchemeEventHandler : IRootSchemeEventHandler
     {
-        private readonly ILogger<BaseSchemeEventHandler> logger;
+        private readonly ILogger<RootSchemeEventHandler> logger;
         private readonly ISchemePublishedEventHandler schemePublishedEventHandler;
+        private readonly ISchemeUnpublishedEventHandler schemeUnpublishedEventHandler;
 
-        public BaseSchemeEventHandler(
-            ILogger<BaseSchemeEventHandler> logger,
-            ISchemePublishedEventHandler schemePublishedEventHandler)
+        public RootSchemeEventHandler(
+            ILogger<RootSchemeEventHandler> logger,
+            ISchemePublishedEventHandler schemePublishedEventHandler,
+            ISchemeUnpublishedEventHandler schemeUnpublishedEventHandler)
         {
             this.logger = logger;
             this.schemePublishedEventHandler = schemePublishedEventHandler;
+            this.schemeUnpublishedEventHandler = schemeUnpublishedEventHandler;
         }
 
         public async Task Init()
@@ -40,6 +43,12 @@ namespace MidnightLizard.Schemes.Screenshots.EventHandlers
                     case nameof(SchemePublishedEvent):
                     {
                         await this.schemePublishedEventHandler.HandleEvent(transEvent.Payload.Value as string);
+                        break;
+                    }
+
+                    case nameof(SchemeUnpublishedEvent):
+                    {
+                        this.schemeUnpublishedEventHandler.HandleEvent(transEvent.Payload.Value as string);
                         break;
                     }
 

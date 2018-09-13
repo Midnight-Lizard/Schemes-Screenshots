@@ -11,6 +11,7 @@ namespace MidnightLizard.Schemes.Screenshots.Services
     public interface IScreenshotUploader
     {
         void UploadScreenshot(Screenshot screenshot);
+        void DeleteScrenshots(string aggregateId);
     }
 
     public class ScreenshotUploader : IScreenshotUploader
@@ -40,6 +41,17 @@ namespace MidnightLizard.Schemes.Screenshots.Services
             if (uploadResult.Error != null)
             {
                 throw new ApplicationException($"Faild to upload screenshot for {screenshot.AggregateId}. Error: {uploadResult.Error.Message}");
+            }
+        }
+
+        public void DeleteScrenshots(string aggregateId)
+        {
+            var publicIdPrefix = this.screenshotConfig.Value.SCREENSHOT_CDN_PREFIX_TEMPLATE
+                .Replace("{id}", aggregateId);
+            var deleteResult = this.cloudinary.DeleteResourcesByPrefix(aggregateId);
+            if (deleteResult.Error != null)
+            {
+                throw new ApplicationException($"Faild to delete screenshots for {aggregateId}. Error: {deleteResult.Error.Message}");
             }
         }
     }

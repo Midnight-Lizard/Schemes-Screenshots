@@ -35,7 +35,7 @@ namespace MidnightLizard.Schemes.Screenshots.Services
         protected List<TopicPartition> assignedEventsPartitions;
         protected readonly ILogger<MessagingQueue> logger;
         protected readonly KafkaConfig kafkaConfig;
-        private readonly BaseSchemeEventHandler schemeEventHandler;
+        private readonly RootSchemeEventHandler schemeEventHandler;
         protected Consumer<string, string> eventsConsumer;
         protected CancellationToken cancellationToken;
         protected TaskCompletionSource<bool> queuePausingCompleted;
@@ -46,7 +46,7 @@ namespace MidnightLizard.Schemes.Screenshots.Services
         public MessagingQueue(
             ILogger<MessagingQueue> logger,
             KafkaConfig config,
-            BaseSchemeEventHandler schemeEventHandler)
+            RootSchemeEventHandler schemeEventHandler)
         {
             this.logger = logger;
             this.kafkaConfig = config;
