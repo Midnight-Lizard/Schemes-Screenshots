@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using MidnightLizard.Schemes.Screenshots.Configuration;
 using MidnightLizard.Schemes.Screenshots.Services;
+using Newtonsoft.Json;
 
 namespace MidnightLizard.Schemes.Screenshots
 {
@@ -25,6 +27,17 @@ namespace MidnightLizard.Schemes.Screenshots
             services.Configure<BrowserConfig>(this.Configuration);
             services.Configure<ExtensionConfig>(this.Configuration);
             services.Configure<ScreenshotsConfig>(this.Configuration);
+            
+            services.AddSingleton<KafkaConfig>(x => new KafkaConfig
+            {
+                KAFKA_EVENTS_CONSUMER_CONFIG = JsonConvert
+                    .DeserializeObject<Dictionary<string, object>>(
+                        Configuration.GetValue<string>(
+                            nameof(KafkaConfig.KAFKA_EVENTS_CONSUMER_CONFIG))),
+
+                SCHEMES_EVENTS_TOPIC = Configuration.GetValue<string>(
+                    nameof(KafkaConfig.SCHEMES_EVENTS_TOPIC))
+            });
 
             services.AddTransient<IExtensionManager, ExtensionManager>();
             services.AddTransient<IScreenshotGenerator, ScreenshotGenerator>();

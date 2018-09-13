@@ -25,3 +25,13 @@ env:
   SCREENSHOT_OUT_DIR: ./img
   SCREENSHOT_SIZES: 1280x800x200,1120x700x200,960x600x200,800x500x200,640x400x200
   SCREENSHOT_CDN_PREFIX_TEMPLATE: cs/{id}
+  SCHEMES_EVENTS_TOPIC: schemes-events-a
+  KAFKA_EVENTS_CONSUMER_CONFIG: |-
+    {
+      "group.id": "schemes-screenshots-generator",
+      "bootstrap.servers": "bootstrap.kafka:9092",
+      "partition.assignment.strategy": "range",
+      "enable.auto.commit": false,
+      "auto.commit.interval.ms": 1000,
+      "auto.offset.reset": "earliest"
+    }
