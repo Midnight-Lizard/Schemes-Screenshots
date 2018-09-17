@@ -26,7 +26,7 @@ namespace MidnightLizard.Schemes.Screenshots.Models
 
         public override string ToString()
         {
-            return $"{this.Title}:{this.Width}x{this.Height}x{this.Scale}";
+            return $"{this.Width}x{this.Height}";
         }
     }
 }
