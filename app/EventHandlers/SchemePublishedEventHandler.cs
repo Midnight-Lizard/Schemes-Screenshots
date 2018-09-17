@@ -37,8 +37,11 @@ namespace MidnightLizard.Schemes.Screenshots.EventHandlers
         public async Task Init()
         {
             await this.extensionManager.DownloadExtension();
+            logger.LogInformation("Extension downloaded.");
             this.extensionManager.ExtractExtension();
+            logger.LogInformation("Extension extracted.");
             await this.screenshotGenerator.WarmUpAsync(new BrowserManager());
+            logger.LogInformation("Browser warmed up.");
         }
 
         public async Task HandleEvent(string schemePublishedEventJsonString)
