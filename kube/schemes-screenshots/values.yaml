@@ -1,6 +1,16 @@
 replicaCount: 1
 image: schemes-screenshots:latest
 pullPolicy: IfNotPresent
+livenessProbe:
+  path: /status/isalive
+  initialDelaySeconds: 60
+  periodSeconds: 45
+  timeoutSeconds: 10
+readinessProbe:
+  path: /status/isready
+  initialDelaySeconds: 30
+  periodSeconds: 20
+  timeoutSeconds: 5
 service:
   name: schemes-screenshots
   type: NodePort
@@ -8,11 +18,21 @@ service:
   internalPort: 5000
 secrets:
   cloudinaryUrl: "base64 encoded 'cloudinary://clientId:clientSecrete@cloudName'"
-screenshotUrls:
-  Google Search: https://www.google.com/search?hl=en&q={colorSchemeName}
-  Google Search Images: https://www.google.com/search?hl=en&tbm=isch&q={colorSchemeName}
-  Wikipedia: https://en.wikipedia.org/wiki/Orion_Nebula
-screenshotCdnIdTemplate: cs/{id}/{title}/{size}
+screenshotConfig:
+  outDir: ./img
+  cdnIdTemplate: cs/{id}/{title}/{size}
+  cdnUrlTemplate: https://res.cloudinary.com/midnight-lizard/{id}.png
+  cdnPrefixTemplate: cs/{id}/
+  sizes:
+    xl: 1280x800x200
+    lg: 1120x700x200
+    md: 960x600x200
+    sm: 800x500x200
+    xs: 640x400x200
+  urls:
+    # Google Search: https://www.google.com/search?hl=en&q={colorSchemeName}
+    Google Search Images: https://www.google.com/search?hl=en&tbm=isch&q={colorSchemeName}
+    Wikipedia: https://en.wikipedia.org/wiki/Orion_Nebula
 env:
   ASPNETCORE_URLS: http://*:5000
   CHROME_EXECUTABLE_PATH: /usr/bin/google-chrome-unstable
@@ -22,9 +42,6 @@ env:
   EXTENSION_ARCHIVE_PATH: ./ext/ml
   EXTENSION_EXTRACT_PATH: ./ext/ml.zip
   EXTENSION_DEFAULT_COLOR_SCHEME_ID: dimmedDust
-  SCREENSHOT_OUT_DIR: ./img
-  SCREENSHOT_SIZES: 1280x800x200,1120x700x200,960x600x200,800x500x200,640x400x200
-  SCREENSHOT_CDN_PREFIX_TEMPLATE: cs/{id}
   SCHEMES_EVENTS_TOPIC: schemes-events-a
   KAFKA_EVENTS_CONSUMER_CONFIG: |-
     {
