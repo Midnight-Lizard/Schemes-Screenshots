@@ -37,10 +37,23 @@
             }
         },
         {
-            "name": ".NET Core Attach",
+            "name": "Attach to Minikube",
             "type": "coreclr",
-            "request": "attach",
-            "processId": "${command:pickProcess}"
+            "request": "attach", // we are going to attach to the existing pod
+            "processName": "dotnet",
+            "sourceFileMap": {
+                // mapping of source code inside a container to the source code on a host machine
+                "/build": "${workspaceRoot}/app"
+            },
+            "pipeTransport": {
+                "pipeProgram": "C:\\Program Files\\Git\\bin\\bash.exe",
+                "pipeCwd": "${workspaceRoot}",
+                "pipeArgs": [
+                    "./shell/kube-debug.sh"
+                ],
+                "quoteArgs": false,
+                "debuggerPath": "/vsdbg/vsdbg" // path to debugger installed inside a container
+            }
         }
     ,]
 }
