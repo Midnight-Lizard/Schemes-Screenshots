@@ -17,18 +17,18 @@ namespace MidnightLizard.Schemes.Screenshots.Services
     public class ScreenshotUploader : IScreenshotUploader
     {
         private readonly Cloudinary cloudinary;
-        private readonly IOptions<ScreenshotsConfig> screenshotConfig;
+        private readonly ScreenshotsConfig screenshotConfig;
 
         public ScreenshotUploader(IOptions<ScreenshotsConfig> screenshotConfig)
         {
             this.cloudinary = new Cloudinary();
-            this.screenshotConfig = screenshotConfig;
+            this.screenshotConfig = screenshotConfig.Value;
         }
 
         public void UploadScreenshot(Screenshot screenshot)
         {
             var title = Regex.Replace(screenshot.Title.ToLower(), "\\s", "-");
-            var publicId = this.screenshotConfig.Value.SCREENSHOT_CDN_ID_TEMPLATE
+            var publicId = this.screenshotConfig.SCREENSHOT_CDN_ID_TEMPLATE
                 .Replace("{id}", screenshot.AggregateId)
                 .Replace("{title}", title)
                 .Replace("{size}", screenshot.Size.ToString());
@@ -46,7 +46,7 @@ namespace MidnightLizard.Schemes.Screenshots.Services
 
         public void DeleteScrenshots(string aggregateId)
         {
-            var publicIdPrefix = this.screenshotConfig.Value.SCREENSHOT_CDN_PREFIX_TEMPLATE
+            var publicIdPrefix = this.screenshotConfig.SCREENSHOT_CDN_PREFIX_TEMPLATE
                 .Replace("{id}", aggregateId);
             var deleteResult = this.cloudinary.DeleteResourcesByPrefix(publicIdPrefix);
             if (deleteResult.Error != null)
