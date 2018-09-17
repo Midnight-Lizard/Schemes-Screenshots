@@ -48,7 +48,7 @@ namespace MidnightLizard.Schemes.Screenshots.Services
         {
             var publicIdPrefix = this.screenshotConfig.Value.SCREENSHOT_CDN_PREFIX_TEMPLATE
                 .Replace("{id}", aggregateId);
-            var deleteResult = this.cloudinary.DeleteResourcesByPrefix(aggregateId);
+            var deleteResult = this.cloudinary.DeleteResourcesByPrefix(publicIdPrefix);
             if (deleteResult.Error != null)
             {
                 throw new ApplicationException($"Faild to delete screenshots for {aggregateId}. Error: {deleteResult.Error.Message}");

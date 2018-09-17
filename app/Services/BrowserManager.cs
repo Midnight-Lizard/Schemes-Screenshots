@@ -22,17 +22,11 @@ namespace MidnightLizard.Schemes.Screenshots.Services
 
         public async Task LaunchAsync(BrowserConfig browserConfig, ExtensionConfig extensionConfig)
         {
-            var processName = browserConfig.CHROME_KILL_EXISTING_PROCESSES;
-            if (!string.IsNullOrEmpty(processName))
-            {
-                foreach (var chrome in Process.GetProcessesByName(processName))
-                {
-                    chrome.Kill();
-                }
-            }
+            ClosePreviousBrowsers(browserConfig);
             var extensionFullPath = Path.GetFullPath(extensionConfig.EXTENSION_EXTRACT_PATH);
             this.browser = await Puppeteer.LaunchAsync(new LaunchOptions
             {
+                Timeout = 60000,
                 ExecutablePath = browserConfig.CHROME_EXECUTABLE_PATH,
                 Headless = false,
                 Args = new[] {
@@ -55,7 +49,7 @@ namespace MidnightLizard.Schemes.Screenshots.Services
                     Height = size.Height,
                     DeviceScaleFactor = size.Scale / 100.0
                 });
-                await page.GoToAsync(url, 10000, new[] { WaitUntilNavigation.Load });
+                await page.GoToAsync(url, 60000, new[] { WaitUntilNavigation.Load });
                 await Task.Delay(1000);
                 await page.ScreenshotAsync(outFilePath, new ScreenshotOptions()
                 {
@@ -74,11 +68,30 @@ namespace MidnightLizard.Schemes.Screenshots.Services
                     Height = size.Height,
                     DeviceScaleFactor = size.Scale / 100.0
                 });
-                await page.GoToAsync(url, 60000, new[] { WaitUntilNavigation.Load });
+                await page.GoToAsync(url, 90000, new[] { WaitUntilNavigation.Load });
             }
         }
 
-        #region IDisposable Support
+        private void ClosePreviousBrowsers(BrowserConfig browserConfig)
+        {
+            var processName = browserConfig.CHROME_KILL_EXISTING_PROCESSES;
+            if (!string.IsNullOrEmpty(processName))
+            {
+                foreach (var chrome in Process.GetProcessesByName(processName))
+                {
+                    if (!chrome.HasExited)
+                    {
+                        chrome.Close();
+                        if (!chrome.WaitForExit(3000))
+                        {
+                            chrome.Kill();
+                        }
+                    }
+                }
+            }
+        }
+
+        #region IDisposable Support...
         private bool disposedValue = false; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
@@ -99,6 +112,6 @@ namespace MidnightLizard.Schemes.Screenshots.Services
         {
             this.Dispose(true);
         }
-        #endregion
+        #endregion IDisposable Support...
     }
 }

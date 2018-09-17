@@ -35,7 +35,7 @@ namespace MidnightLizard.Schemes.Screenshots.Services
         protected List<TopicPartition> assignedEventsPartitions;
         protected readonly ILogger<MessagingQueue> logger;
         protected readonly KafkaConfig kafkaConfig;
-        private readonly RootSchemeEventHandler schemeEventHandler;
+        private readonly IRootSchemeEventHandler schemeEventHandler;
         protected Consumer<string, string> eventsConsumer;
         protected CancellationToken cancellationToken;
         protected TaskCompletionSource<bool> queuePausingCompleted;
@@ -46,7 +46,7 @@ namespace MidnightLizard.Schemes.Screenshots.Services
         public MessagingQueue(
             ILogger<MessagingQueue> logger,
             KafkaConfig config,
-            RootSchemeEventHandler schemeEventHandler)
+            IRootSchemeEventHandler schemeEventHandler)
         {
             this.logger = logger;
             this.kafkaConfig = config;
@@ -102,8 +102,8 @@ namespace MidnightLizard.Schemes.Screenshots.Services
             {
                 try
                 {
-                    await schemeEventHandler.Init();
                     this.queueStatus = QueueStatus.Running;
+                    await schemeEventHandler.Init();
                     using (var eventsConsumer = new Consumer<string, string>(
                         this.kafkaConfig.KAFKA_EVENTS_CONSUMER_CONFIG,
                         new StringDeserializer(Encoding.UTF8),
@@ -118,6 +118,7 @@ namespace MidnightLizard.Schemes.Screenshots.Services
                             if (this.eventsConsumer.Consume(out var @event, this.timeout))
                             {
                                 await this.HandleMessage(@event);
+                                await this.eventsConsumer.CommitAsync(@event);
                             }
                         }
                     }
@@ -153,6 +154,7 @@ namespace MidnightLizard.Schemes.Screenshots.Services
             else
             {
                 await this.schemeEventHandler.HandleTransportEvent(kafkaMessage.Value);
+                this.logger.LogInformation($"Event [{kafkaMessage.Key}] handled");
             }
         }
     }

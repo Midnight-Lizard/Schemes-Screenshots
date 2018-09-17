@@ -79,9 +79,9 @@ namespace MidnightLizard.Schemes.Screenshots.Services
                 var results = new List<Screenshot>();
                 var config = this.screenshotsConfig.Value;
                 await browserManager.LaunchAsync(this.browserConfig.Value, this.extensionConfig.Value);
-                foreach (var url in config.SCREENSHOT_URLS.Split(',', '~'))
+                foreach (var url in config.SCREENSHOT_URLS.Split(',', '~', StringSplitOptions.RemoveEmptyEntries))
                 {
-                    foreach (var size in config.SCREENSHOT_SIZES.Split(',', '~')
+                    foreach (var size in config.SCREENSHOT_SIZES.Split(',', '~', StringSplitOptions.RemoveEmptyEntries)
                         .Select(sizeStr => new ScreenshotSize(sizeStr)))
                     {
                         await browserManager.WarmUpAsync(url, size);

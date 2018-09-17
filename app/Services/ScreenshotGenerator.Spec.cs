@@ -19,9 +19,9 @@ namespace MidnightLizard.Schemes.Screenshots.Services
             SCREENSHOT_URLS =
                     "https://www.google.com/search?hl=en&q={colorSchemeName}," +
                     "https://www.google.com/search?hl=en&tbm=isch&q={colorSchemeName},",
-            SCREENSHOT_SIZES = "1280x800x200,960x600x200,480x300x200",
+            SCREENSHOT_SIZES = "xl:1280x800x200,md:960x600x200,xs:640x400x200,",
             SCREENSHOT_OUT_DIR = "./img",
-            SCREENSHOT_URL_TITLES= "Google Search,Google Search Images"
+            SCREENSHOT_URL_TITLES= "Google Search,Google Search Images,"
         };
         private readonly SchemePublishedEvent publishedEvent = new SchemePublishedEvent
         {
