@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using MidnightLizard.Schemes.Screenshots.Configuration;
+using MidnightLizard.Schemes.Screenshots.EventHandlers;
 using MidnightLizard.Schemes.Screenshots.Services;
 using Newtonsoft.Json;
 
@@ -27,7 +28,7 @@ namespace MidnightLizard.Schemes.Screenshots
             services.Configure<BrowserConfig>(this.Configuration);
             services.Configure<ExtensionConfig>(this.Configuration);
             services.Configure<ScreenshotsConfig>(this.Configuration);
-            
+
             services.AddSingleton<KafkaConfig>(x => new KafkaConfig
             {
                 KAFKA_EVENTS_CONSUMER_CONFIG = JsonConvert
@@ -39,9 +40,13 @@ namespace MidnightLizard.Schemes.Screenshots
                     nameof(KafkaConfig.SCHEMES_EVENTS_TOPIC))
             });
 
-            services.AddTransient<IExtensionManager, ExtensionManager>();
-            services.AddTransient<IScreenshotGenerator, ScreenshotGenerator>();
-            services.AddTransient<IScreenshotUploader, ScreenshotUploader>();
+            services.AddSingleton<IExtensionManager, ExtensionManager>();
+            services.AddSingleton<IMessagingQueue, MessagingQueue>();
+            services.AddSingleton<IRootSchemeEventHandler, RootSchemeEventHandler>();
+            services.AddSingleton<ISchemePublishedEventHandler, SchemePublishedEventHandler>();
+            services.AddSingleton<ISchemeUnpublishedEventHandler, SchemeUnpublishedEventHandler>();
+            services.AddSingleton<IScreenshotGenerator, ScreenshotGenerator>();
+            services.AddSingleton<IScreenshotUploader, ScreenshotUploader>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
