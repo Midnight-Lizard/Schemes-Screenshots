@@ -54,7 +54,7 @@ namespace MidnightLizard.Schemes.Screenshots.Services
                     foreach (var size in config.SCREENSHOT_SIZES.Split(',', '~', StringSplitOptions.RemoveEmptyEntries)
                         .Select(sizeStr => new ScreenshotSize(sizeStr)))
                     {
-                        // TODO: remove this and uncomment above
+                        // TODO: remove urlWithName assignment below and uncomment above
                         var urlWithName = url.Replace($"{{{nameof(ColorScheme.colorSchemeName)}}}", colorSchemeNameEncoded + "+" + size.Width.ToString());
                         var outFilePath = Path.Combine(config.SCREENSHOT_OUT_DIR, Guid.NewGuid().ToString() + ".png");
                         await browserManager.ScreenshotAsync(urlWithName, size, outFilePath);
