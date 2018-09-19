@@ -47,6 +47,7 @@ namespace MidnightLizard.Schemes.Screenshots
             services.AddSingleton<ISchemeUnpublishedEventHandler, SchemeUnpublishedEventHandler>();
             services.AddSingleton<IScreenshotGenerator, ScreenshotGenerator>();
             services.AddSingleton<IScreenshotUploader, ScreenshotUploader>();
+            services.AddSingleton<IProgressiveImageConverter, ProgressiveImageConverter>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

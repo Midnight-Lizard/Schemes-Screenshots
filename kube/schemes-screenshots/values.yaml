@@ -21,7 +21,7 @@ secrets:
 screenshotConfig:
   outDir: ./img
   cdnIdTemplate: cs/{id}/{title}/{size}
-  cdnUrlTemplate: https://res.cloudinary.com/midnight-lizard/{id}.png
+  cdnUrlTemplate: https://res.cloudinary.com/midnight-lizard/{id}.jpg
   cdnPrefixTemplate: cs/{id}/
   sizes:
     xl: 1280x800x200
@@ -31,8 +31,8 @@ screenshotConfig:
     xs: 640x400x200
   urls:
     # Google Search: https://www.google.com/search?hl=en&q={colorSchemeName}
-    Google Search Images: https://www.google.com/search?hl=en&tbm=isch&q={colorSchemeName}
     Wikipedia: https://en.wikipedia.org/wiki/Orion_Nebula
+    Google Search Images: https://www.google.com/search?hl=en&tbm=isch&q={colorSchemeName}
 env:
   ASPNETCORE_URLS: http://*:5000
   CHROME_EXECUTABLE_PATH: /usr/bin/google-chrome-unstable

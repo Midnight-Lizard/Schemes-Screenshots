@@ -19,15 +19,18 @@ namespace MidnightLizard.Schemes.Screenshots.Services
 
     public class ScreenshotGenerator : IScreenshotGenerator
     {
+        private readonly IProgressiveImageConverter progressiveImageConverter;
         private readonly IOptions<BrowserConfig> browserConfig;
         private readonly IOptions<ExtensionConfig> extensionConfig;
         private readonly IOptions<ScreenshotsConfig> screenshotsConfig;
 
         public ScreenshotGenerator(
+            IProgressiveImageConverter progressiveImageConverter,
             IOptions<BrowserConfig> browserConfig,
             IOptions<ExtensionConfig> extensionConfig,
             IOptions<ScreenshotsConfig> screenshotsConfig)
         {
+            this.progressiveImageConverter = progressiveImageConverter;
             this.browserConfig = browserConfig;
             this.extensionConfig = extensionConfig;
             this.screenshotsConfig = screenshotsConfig;
@@ -56,15 +59,18 @@ namespace MidnightLizard.Schemes.Screenshots.Services
                     {
                         // TODO: remove urlWithName assignment below and uncomment above
                         var urlWithName = url.Replace($"{{{nameof(ColorScheme.colorSchemeName)}}}", colorSchemeNameEncoded + "+" + size.Width.ToString());
-                        var outFilePath = Path.Combine(config.SCREENSHOT_OUT_DIR, Guid.NewGuid().ToString() + ".png");
-                        await browserManager.ScreenshotAsync(urlWithName, size, outFilePath);
+                        var baseOutFilePath = Path.Combine(config.SCREENSHOT_OUT_DIR, Guid.NewGuid().ToString());
+                        var pngOutFilePath = baseOutFilePath + ".png";
+                        var jpegOutFilePath = baseOutFilePath + ".jpg";
+                        await browserManager.ScreenshotAsync(urlWithName, size, pngOutFilePath);
+                        progressiveImageConverter.ConvertPngToProgressiveJpeg(pngOutFilePath, jpegOutFilePath);
                         results.Add(new Screenshot
                         {
                             AggregateId = @event.AggregateId,
                             Url = urlWithName,
                             Title = title,
                             Size = size,
-                            FilePath = outFilePath
+                            FilePath = jpegOutFilePath
                         });
                     }
                 }

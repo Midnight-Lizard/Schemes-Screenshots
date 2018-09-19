@@ -67,69 +67,13 @@ namespace MidnightLizard.Schemes.Screenshots.Controllers
                     }
                 });
 
-            foreach (var shot in results)
-            {
-                screenshotUploader.UploadScreenshot(shot);
-            }
+            //foreach (var shot in results)
+            //{
+            //    screenshotUploader.UploadScreenshot(shot);
+            //}
 
             return this.Content(string.Join("<br/>", results
                 .Select(x => $"<a style=\"font-size:20px\" href=\"{x.FilePath.Replace("./wwwroot", "")}\">{x.Url} -- {x.Size.Width}x{x.Size.Height}</a>")), "text/html");
-        }
-
-        private async Task ReplaceDefaultColorScheme(string extractPath)
-        {
-            var contentScriptFilePath = Path.Combine(extractPath, "./js/content-script.js");
-            var contentScript = await System.IO.File.ReadAllTextAsync(contentScriptFilePath);
-
-            var newContentScript = Regex.Replace(contentScript, "colorSchemeId: \"dimmedDust\",[^}]+", this.newColorScheme);
-
-            await System.IO.File.WriteAllTextAsync(contentScriptFilePath, newContentScript);
-        }
-
-        private static async Task<string> TakeScreenshot(string extractPath)
-        {
-            // await new BrowserFetcher().DownloadAsync(BrowserFetcher.DefaultRevision);
-            var browser = await Puppeteer.LaunchAsync(new LaunchOptions
-            {
-                ExecutablePath = "/usr/bin/google-chrome-unstable",
-                Headless = false,
-                Args = new[] {
-                    // "--disable-dev-shm-usage",
-                    // "--no-sandbox",
-                    // "--disable-setuid-sandbox",
-                    "--disable-gpu",
-                    $"--load-extension={extractPath}",
-                    $"--disable-extensions-except={extractPath}"
-                }
-            });
-            var page = await browser.NewPageAsync();
-            await page.SetViewportAsync(new ViewPortOptions
-            {
-                Width = 1280,
-                Height = 800
-            });
-            await page.GoToAsync("https://www.google.com/search?hl=en&q=orion+nebula", 3000,
-                new[] { WaitUntilNavigation.Networkidle0 });
-            var filePath = "./screenshot.png";
-            await page.ScreenshotAsync(Path.Combine("./wwwroot", filePath), new ScreenshotOptions()
-            {
-                Type = ScreenshotType.Png
-            });
-            await browser.CloseAsync();
-            return filePath;
-        }
-
-        private static async Task<string> DownloadExtension()
-        {
-            var url = new Uri("https://github.com/Midnight-Lizard/Midnight-Lizard/releases/download/latest/chrome.zip");
-            var localPath = "./extension/ml.zip";
-            var extractPath = Path.GetFullPath("./extension/ml");
-            using (var client = new WebClient())
-            {
-                await client.DownloadFileTaskAsync(url, localPath);
-            }
-            ZipFile.ExtractToDirectory(localPath, extractPath, true);
-            return extractPath;
         }
 
         private readonly string newColorScheme = @"{
