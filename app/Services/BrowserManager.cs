@@ -50,7 +50,7 @@ namespace MidnightLizard.Schemes.Screenshots.Services
                     DeviceScaleFactor = size.Scale / 100.0
                 });
                 await page.GoToAsync(url, 60000, new[] { WaitUntilNavigation.Load });
-                await Task.Delay(1000);
+                await Task.Delay(2000);
                 await page.ScreenshotAsync(outFilePath, new ScreenshotOptions()
                 {
                     Type = ScreenshotType.Png
