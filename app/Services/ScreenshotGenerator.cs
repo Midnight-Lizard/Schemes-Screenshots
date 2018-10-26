@@ -53,17 +53,22 @@ namespace MidnightLizard.Schemes.Screenshots.Services
                                                  on url.i equals title.i
                                              select (url.url, title.title))
                 {
-                    //var urlWithName = url.Replace($"{{{nameof(ColorScheme.colorSchemeName)}}}", colorSchemeNameEncoded);
+                    var urlWithName = url.Replace($"{{{nameof(ColorScheme.colorSchemeName)}}}", colorSchemeNameEncoded);
                     foreach (var size in config.SCREENSHOT_SIZES.Split(',', '~', StringSplitOptions.RemoveEmptyEntries)
                         .Select(sizeStr => new ScreenshotSize(sizeStr)))
                     {
-                        // TODO: remove urlWithName assignment below and uncomment above
-                        var urlWithName = url.Replace($"{{{nameof(ColorScheme.colorSchemeName)}}}", colorSchemeNameEncoded + "+" + size.Width.ToString());
+                        // var urlWithName = url.Replace($"{{{nameof(ColorScheme.colorSchemeName)}}}", colorSchemeNameEncoded + "+" + size.Width.ToString());
                         var baseOutFilePath = Path.Combine(config.SCREENSHOT_OUT_DIR, Guid.NewGuid().ToString());
                         var pngOutFilePath = baseOutFilePath + ".png";
                         var jpegOutFilePath = baseOutFilePath + ".jpg";
                         await browserManager.ScreenshotAsync(urlWithName, size, pngOutFilePath);
-                        progressiveImageConverter.ConvertPngToProgressiveJpeg(pngOutFilePath, jpegOutFilePath);
+                        this.progressiveImageConverter.ConvertPngToProgressiveJpeg(pngOutFilePath, jpegOutFilePath,
+                            new ProgressiveImageConverterOptions
+                            {
+                                Resize = true,
+                                Width = size.Width,
+                                Height = size.Height
+                            });
                         results.Add(new Screenshot
                         {
                             AggregateId = @event.AggregateId,

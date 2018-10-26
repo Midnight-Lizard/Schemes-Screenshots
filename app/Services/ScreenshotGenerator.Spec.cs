@@ -86,7 +86,8 @@ namespace MidnightLizard.Schemes.Screenshots.Services
                     this.screenshotsConfig.SCREENSHOT_URLS.Split(',', StringSplitOptions.RemoveEmptyEntries).Length;
 
                 this.progressiveImageConverterStub.Received(totalShots)
-                    .ConvertPngToProgressiveJpeg(Arg.Any<string>(), Arg.Any<string>());
+                    .ConvertPngToProgressiveJpeg(Arg.Any<string>(), Arg.Any<string>(),
+                        Arg.Any<ProgressiveImageConverterOptions>());
             }
 
             [It(nameof(ScreenshotGenerator.GenerateScreenshots))]
