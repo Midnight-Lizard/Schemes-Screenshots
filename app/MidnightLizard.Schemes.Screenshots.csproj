@@ -12,19 +12,22 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CloudinaryDotNet" Version="1.3.1" />
-    <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="7.7.0" />
+    <PackageReference Include="CloudinaryDotNet" Version="1.5.0" />
+    <PackageReference Include="Magick.NET-Q8-AnyCPU" Version="7.9.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.All" />
-    <PackageReference Include="PuppeteerSharp" Version="1.4.0" />
-    <PackageReference Include="Confluent.Kafka" Version="0.11.5" />
-    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.3.0" />
+    <PackageReference Include="PuppeteerSharp" Version="1.10.0" />
+    <PackageReference Include="Confluent.Kafka" Version="0.11.6" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.3.1" />
   </ItemGroup>
 
   <Choose>
     <When Condition=" '$(Configuration)'=='Test' ">
       <ItemGroup>
-        <PackageReference Include="MidnightLizard.Testing.Utilities" Version="2.1.0" />
-        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
+        <PackageReference Include="MidnightLizard.Testing.Utilities" Version="2.2.0" />
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
       </ItemGroup>
     </When>
     <When Condition=" '$(Configuration)'!='Test' ">
