@@ -38,8 +38,8 @@ screenshotConfig:
     # Google Search Images: https://www.google.com/search?hl=en&tbm=isch&q={colorSchemeName}
 env:
   ASPNETCORE_URLS: http://*:5000
-  CHROME_EXECUTABLE_PATH: /usr/bin/google-chrome-unstable
-  CHROME_KILL_EXISTING_PROCESSES: google-chrome-unstable
+  CHROME_EXECUTABLE_PATH: /usr/bin/google-chrome-stable
+  CHROME_KILL_EXISTING_PROCESSES: google-chrome-stable
   CHROME_FLAGS: --disable-gpu
   EXTENSION_DOWNLOAD_URL: https://github.com/Midnight-Lizard/Midnight-Lizard/releases/download/latest/chrome.zip
   EXTENSION_ARCHIVE_PATH: ./ext/ml
