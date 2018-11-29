@@ -44,7 +44,8 @@ RUN groupadd -r pptruser && useradd -r -g pptruser -G audio,video pptruser \
     && chown -R pptruser:pptruser /home/pptruser \
     && chown -R pptruser:pptruser /app \
     && find /app -type d -exec chmod 2775 {} \; \
-    && find /app -type f -exec chmod ug+rw {} \;
+    && find /app -type f -exec chmod ug+rw {} \; \
+    && chmod +x /app/entrypoint.sh
 # Run everything after as non-privileged user.
 USER pptruser
 CMD ./entrypoint.sh
