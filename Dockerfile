@@ -1,7 +1,7 @@
 #===========================================#
 #               DOTNET  BUILD               #
 #===========================================#
-FROM microsoft/dotnet:2.1-sdk as dotnet-build
+FROM microsoft/dotnet:2.2-sdk as dotnet-build
 ARG DOTNET_CONFIG=Release
 COPY /app/*.csproj /build/
 WORKDIR /build
@@ -12,7 +12,7 @@ RUN dotnet publish -c ${DOTNET_CONFIG} -o ./results
 #===========================================#
 #               DOTNET  TEST                #
 #===========================================#
-FROM microsoft/dotnet:2.1-sdk as dotnet-test
+FROM microsoft/dotnet:2.2-sdk as dotnet-test
 WORKDIR /test
 COPY --from=dotnet-build /build .
 RUN dotnet test -c Test
@@ -20,7 +20,7 @@ RUN dotnet test -c Test
 #===========================================#
 #               IMAGE BUILD                 #
 #===========================================#
-FROM microsoft/dotnet:2.1-aspnetcore-runtime as app
+FROM microsoft/dotnet:2.2-aspnetcore-runtime as app
 RUN apt-get update && apt-get install -y xvfb
 RUN apt-get update && apt-get install -y gnupg gnupg2 gnupg1 wget --no-install-recommends \
     && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \

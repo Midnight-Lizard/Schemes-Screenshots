@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <LangVersion>Latest</LangVersion>
     <Configurations>Debug;Release;Test</Configurations>
     <StartupObject>MidnightLizard.Schemes.Screenshots.Program</StartupObject>
@@ -23,7 +23,7 @@
   <Choose>
     <When Condition=" '$(Configuration)'=='Test' ">
       <ItemGroup>
-        <PackageReference Include="MidnightLizard.Testing.Utilities" Version="2.2.0" />
+        <PackageReference Include="MidnightLizard.Testing.Utilities" Version="2.3.0" />
         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
