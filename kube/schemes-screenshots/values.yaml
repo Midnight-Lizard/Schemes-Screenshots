@@ -32,8 +32,8 @@ screenshotConfig:
   urls:
     # Google Search: https://www.google.com/search?hl=en&q={colorSchemeName}
     Wikipedia: https://en.wikipedia.org/wiki/Orion_Nebula
-    DuckDuckGo: https://duckduckgo.com/?t=h_&ia=web&q={colorSchemeName}
-    DuckDuckGo Images: https://duckduckgo.com/?t=h_&iar=images&iax=images&ia=images&q={colorSchemeName}
+    DuckDuckGo: https://duckduckgo.com/?t=h_&ia=web&kp=1&q={colorSchemeName}
+    DuckDuckGo Images: https://duckduckgo.com/?t=h_&iar=images&iax=images&ia=images&kp=1&q={colorSchemeName}
     Medium: https://medium.com
     # Google Search Images: https://www.google.com/search?hl=en&tbm=isch&q={colorSchemeName}
 env:
