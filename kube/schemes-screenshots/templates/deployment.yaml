@@ -27,6 +27,10 @@ spec:
           ports:
             - containerPort: {{ .Values.service.internalPort }}
               protocol: TCP
+          resources:
+            requests:
+              cpu: 25m
+              memory: 64Mi
           livenessProbe:
             httpGet:
               path: {{ .Values.livenessProbe.path }}
