@@ -62,7 +62,7 @@ namespace MidnightLizard.Schemes.Screenshots.EventHandlers
             private readonly string testEventJson;
             private readonly SchemePublishedEvent testEvent = new SchemePublishedEvent
             {
-                AggregateId = "agg-test-id",
+                Id = "agg-test-id",
                 ColorScheme = new ColorScheme
                 {
                     colorSchemeId = "cs-test-id",
@@ -71,9 +71,9 @@ namespace MidnightLizard.Schemes.Screenshots.EventHandlers
             };
             private readonly List<Screenshot> screenshots = new List<Screenshot>
             {
-                new Screenshot { AggregateId="1" },
-                new Screenshot { AggregateId="2" },
-                new Screenshot { AggregateId="3" }
+                new Screenshot { PublicSchemeId="1" },
+                new Screenshot { PublicSchemeId="2" },
+                new Screenshot { PublicSchemeId="3" }
             };
 
             public HandleEventSpec()
@@ -119,7 +119,7 @@ namespace MidnightLizard.Schemes.Screenshots.EventHandlers
                 await this.screenshotGeneratorStub.Received(1).GenerateScreenshots(
                     Arg.Any<IBrowserManager>(),
                     Arg.Is<SchemePublishedEvent>(x =>
-                        x.AggregateId == this.testEvent.AggregateId &&
+                        x.Id == this.testEvent.Id &&
                         x.ColorScheme.colorSchemeId == this.testEvent.ColorScheme.colorSchemeId));
             }
 

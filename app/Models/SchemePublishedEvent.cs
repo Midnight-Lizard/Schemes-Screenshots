@@ -7,7 +7,7 @@ namespace MidnightLizard.Schemes.Screenshots.Models
 {
     public class SchemePublishedEvent
     {
-        public string AggregateId { get; set; }
+        public string Id { get; set; }
         public ColorScheme ColorScheme { get; set; }
     }
 }
