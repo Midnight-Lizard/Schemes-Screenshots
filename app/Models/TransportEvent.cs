@@ -8,6 +8,6 @@ namespace MidnightLizard.Schemes.Screenshots.Models
 {
     public class TransportEvent
     {
-        public string EventType { get; set; }
+        public string Type { get; set; }
     }
 }

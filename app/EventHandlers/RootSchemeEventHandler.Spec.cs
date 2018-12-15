@@ -34,7 +34,7 @@ namespace MidnightLizard.Schemes.Screenshots.EventHandlers
         {
             var transEventJson = JsonConvert.SerializeObject(new TransportEvent
             {
-                EventType = nameof(SchemePublishedEvent),
+                Type = nameof(SchemePublishedEvent),
             });
 
             await this.handler.HandleTransportEvent(transEventJson);
@@ -47,7 +47,7 @@ namespace MidnightLizard.Schemes.Screenshots.EventHandlers
         {
             var transEventJson = JsonConvert.SerializeObject(new TransportEvent
             {
-                EventType = nameof(SchemeUnpublishedEvent)
+                Type = nameof(SchemeUnpublishedEvent)
             });
 
             await this.handler.HandleTransportEvent(transEventJson);
