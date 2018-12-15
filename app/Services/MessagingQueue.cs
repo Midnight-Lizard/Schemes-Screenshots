@@ -153,9 +153,9 @@ namespace MidnightLizard.Schemes.Screenshots.Services
             }
             else
             {
-                this.logger.LogWarning($"Starting handling event [{kafkaMessage.Key}]");
+                this.logger.LogInformation($"Starting handling event [{kafkaMessage.Key}]");
                 await this.schemeEventHandler.HandleTransportEvent(kafkaMessage.Value);
-                this.logger.LogWarning($"Event [{kafkaMessage.Key}] handled");
+                this.logger.LogInformation($"Event [{kafkaMessage.Key}] handled");
             }
         }
     }
