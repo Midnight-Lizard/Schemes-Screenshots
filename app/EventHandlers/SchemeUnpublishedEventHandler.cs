@@ -28,11 +28,11 @@ namespace MidnightLizard.Schemes.Screenshots.EventHandlers
             var unpublishEvent = JsonConvert.DeserializeObject<SchemeUnpublishedEvent>(schemeUnpublishedEventJsonString);
             try
             {
-                screenshotUploader.DeleteScrenshots(unpublishEvent.Id);
+                screenshotUploader.DeleteScrenshots(unpublishEvent.AggregateId);
             }
             catch (System.Exception ex)
             {
-                this.logger.LogError(ex, $"Failed to delete screenshots from CDN for PublicScheme [{unpublishEvent.Id}]");
+                this.logger.LogError(ex, $"Failed to delete screenshots from CDN for PublicScheme [{unpublishEvent.AggregateId}]");
             }
         }
     }

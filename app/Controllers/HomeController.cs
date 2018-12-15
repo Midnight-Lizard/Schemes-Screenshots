@@ -59,7 +59,7 @@ namespace MidnightLizard.Schemes.Screenshots.Controllers
                 new BrowserManager(),
                 new SchemePublishedEvent
                 {
-                    Id = "agg-test-id",
+                    AggregateId = "agg-test-id",
                     ColorScheme = new ColorScheme
                     {
                         colorSchemeId = "cs-test-id",

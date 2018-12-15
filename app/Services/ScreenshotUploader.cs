@@ -11,7 +11,7 @@ namespace MidnightLizard.Schemes.Screenshots.Services
     public interface IScreenshotUploader
     {
         void UploadScreenshot(Screenshot screenshot);
-        void DeleteScrenshots(string publicSchemeId);
+        void DeleteScrenshots(string aggregateId);
     }
 
     public class ScreenshotUploader : IScreenshotUploader
@@ -29,7 +29,7 @@ namespace MidnightLizard.Schemes.Screenshots.Services
         {
             var title = Regex.Replace(screenshot.Title.ToLower(), "\\s", "-");
             var publicId = this.screenshotConfig.SCREENSHOT_CDN_ID_TEMPLATE
-                .Replace("{id}", screenshot.PublicSchemeId)
+                .Replace("{id}", screenshot.AggregateId)
                 .Replace("{title}", title)
                 .Replace("{size}", screenshot.Size.ToString());
             var uploadParams = new ImageUploadParams()
@@ -40,18 +40,18 @@ namespace MidnightLizard.Schemes.Screenshots.Services
             var uploadResult = this.cloudinary.Upload(uploadParams);
             if (uploadResult.Error != null)
             {
-                throw new ApplicationException($"Faild to upload screenshot for {screenshot.PublicSchemeId}. Error: {uploadResult.Error.Message}");
+                throw new ApplicationException($"Faild to upload screenshot for {screenshot.AggregateId}. Error: {uploadResult.Error.Message}");
             }
         }
 
-        public void DeleteScrenshots(string publicSchemeId)
+        public void DeleteScrenshots(string aggregateId)
         {
             var publicIdPrefix = this.screenshotConfig.SCREENSHOT_CDN_PREFIX_TEMPLATE
-                .Replace("{id}", publicSchemeId);
+                .Replace("{id}", aggregateId);
             var deleteResult = this.cloudinary.DeleteResourcesByPrefix(publicIdPrefix);
             if (deleteResult.Error != null)
             {
-                throw new ApplicationException($"Faild to delete screenshots for {publicSchemeId}. Error: {deleteResult.Error.Message}");
+                throw new ApplicationException($"Faild to delete screenshots for {aggregateId}. Error: {deleteResult.Error.Message}");
             }
         }
     }

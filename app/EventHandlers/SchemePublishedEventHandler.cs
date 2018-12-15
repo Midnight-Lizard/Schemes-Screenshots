@@ -64,7 +64,7 @@ namespace MidnightLizard.Schemes.Screenshots.EventHandlers
                 }
                 catch (System.Exception ex)
                 {
-                    this.logger.LogError(ex, $"Failed to upload screenshot to CDN for PublicScheme [{shot.PublicSchemeId}]");
+                    this.logger.LogError(ex, $"Failed to upload screenshot to CDN for PublicScheme [{shot.AggregateId}]");
                 }
             }
         }

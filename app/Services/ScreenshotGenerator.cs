@@ -71,7 +71,7 @@ namespace MidnightLizard.Schemes.Screenshots.Services
                             });
                         results.Add(new Screenshot
                         {
-                            PublicSchemeId = @event.Id,
+                            AggregateId = @event.AggregateId,
                             Url = urlWithName,
                             Title = title,
                             Size = size,

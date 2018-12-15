@@ -32,27 +32,31 @@ namespace MidnightLizard.Schemes.Screenshots.EventHandlers
         [It(nameof(RootSchemeEventHandler) + "." + nameof(RootSchemeEventHandler.HandleTransportEvent))]
         public async void Should_use_SchemePublishedEventHandler_when_event_has_its_type()
         {
-            var transEventJson = JsonConvert.SerializeObject(new TransportEvent
+            var payload = "\"data\"";
+            var transEvent = new TransportEvent
             {
                 Type = nameof(SchemePublishedEvent),
-            });
+                Payload = new Newtonsoft.Json.Linq.JRaw(payload)
+            };
 
-            await this.handler.HandleTransportEvent(transEventJson);
+            await this.handler.HandleTransportEvent(JsonConvert.SerializeObject(transEvent));
 
-            await this.schemePublishedEventHandler.Received(1).HandleEvent(transEventJson);
+            await this.schemePublishedEventHandler.Received(1).HandleEvent(payload);
         }
 
         [It(nameof(RootSchemeEventHandler) + "." + nameof(RootSchemeEventHandler.HandleTransportEvent))]
         public async void Should_use_SchemeUnpublishedEventHandler_when_event_has_its_type()
         {
-            var transEventJson = JsonConvert.SerializeObject(new TransportEvent
+            var payload = "\"data\"";
+            var transEvent = new TransportEvent
             {
-                Type = nameof(SchemeUnpublishedEvent)
-            });
+                Type = nameof(SchemeUnpublishedEvent),
+                Payload = new Newtonsoft.Json.Linq.JRaw(payload)
+            };
 
-            await this.handler.HandleTransportEvent(transEventJson);
+            await this.handler.HandleTransportEvent(JsonConvert.SerializeObject(transEvent));
 
-            this.schemeUnpublishedEventHandler.Received(1).HandleEvent(transEventJson);
+            this.schemeUnpublishedEventHandler.Received(1).HandleEvent(payload);
         }
     }
 }

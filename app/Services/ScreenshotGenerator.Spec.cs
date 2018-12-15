@@ -26,7 +26,7 @@ namespace MidnightLizard.Schemes.Screenshots.Services
         };
         private readonly SchemePublishedEvent publishedEvent = new SchemePublishedEvent
         {
-            Id = "agg-id",
+            AggregateId = "agg-id",
             ColorScheme = new ColorScheme
             {
                 colorSchemeId = "cs-id",
@@ -95,7 +95,7 @@ namespace MidnightLizard.Schemes.Screenshots.Services
             {
                 var results = await this.generator.GenerateScreenshots(this.browserManager, this.publishedEvent);
 
-                results.Should().OnlyContain(x => x.PublicSchemeId == this.publishedEvent.Id);
+                results.Should().OnlyContain(x => x.AggregateId == this.publishedEvent.AggregateId);
             }
         }
     }

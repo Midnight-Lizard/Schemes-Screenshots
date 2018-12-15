@@ -9,7 +9,7 @@ namespace MidnightLizard.Schemes.Screenshots.EventHandlers
     public interface IRootSchemeEventHandler
     {
         Task Init();
-        Task HandleTransportEvent(string eventJsonString);
+        Task HandleTransportEvent(string transportEventJsonString);
     }
 
     public class RootSchemeEventHandler : IRootSchemeEventHandler
@@ -33,22 +33,22 @@ namespace MidnightLizard.Schemes.Screenshots.EventHandlers
             await this.schemePublishedEventHandler.Init();
         }
 
-        public async Task HandleTransportEvent(string eventJsonString)
+        public async Task HandleTransportEvent(string transportEventJsonString)
         {
             try
             {
-                var transEvent = JsonConvert.DeserializeObject<TransportEvent>(eventJsonString);
+                var transEvent = JsonConvert.DeserializeObject<TransportEvent>(transportEventJsonString);
                 switch (transEvent.Type)
                 {
                     case nameof(SchemePublishedEvent):
                     {
-                        await this.schemePublishedEventHandler.HandleEvent(eventJsonString);
+                        await this.schemePublishedEventHandler.HandleEvent(transEvent.Payload.Value as string);
                         break;
                     }
 
                     case nameof(SchemeUnpublishedEvent):
                     {
-                        this.schemeUnpublishedEventHandler.HandleEvent(eventJsonString);
+                        this.schemeUnpublishedEventHandler.HandleEvent(transEvent.Payload.Value as string);
                         break;
                     }
 
@@ -60,7 +60,7 @@ namespace MidnightLizard.Schemes.Screenshots.EventHandlers
             }
             catch (Exception ex)
             {
-                this.logger.LogError(ex, $"Failed to handle [{eventJsonString ?? "event"}]");
+                this.logger.LogError(ex, $"Failed to handle [{transportEventJsonString ?? "event"}]");
             }
         }
     }

@@ -28,7 +28,7 @@ namespace MidnightLizard.Schemes.Screenshots.EventHandlers
             private readonly string testEventJson;
             private readonly SchemeUnpublishedEvent testEvent = new SchemeUnpublishedEvent
             {
-                Id = "agg-test-id"
+                AggregateId = "agg-test-id"
             };
             public HandleEventSpec()
             {
@@ -40,7 +40,7 @@ namespace MidnightLizard.Schemes.Screenshots.EventHandlers
             {
                 this.handler.HandleEvent(this.testEventJson);
 
-                this.screenshotUploaderStub.Received(1).DeleteScrenshots(this.testEvent.Id);
+                this.screenshotUploaderStub.Received(1).DeleteScrenshots(this.testEvent.AggregateId);
             }
 
             [It(nameof(SchemePublishedEventHandler.HandleEvent))]
@@ -49,7 +49,7 @@ namespace MidnightLizard.Schemes.Screenshots.EventHandlers
                 var testException = new Exception("test");
 
                 this.screenshotUploaderStub
-                    .When(x => x.DeleteScrenshots(this.testEvent.Id))
+                    .When(x => x.DeleteScrenshots(this.testEvent.AggregateId))
                     .Throw(testException);
 
                 this.handler.HandleEvent(this.testEventJson);
