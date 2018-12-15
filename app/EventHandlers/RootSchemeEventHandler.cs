@@ -38,7 +38,7 @@ namespace MidnightLizard.Schemes.Screenshots.EventHandlers
             try
             {
                 var transEvent = JsonConvert.DeserializeObject<TransportEvent>(eventJsonString);
-                switch (transEvent.Type)
+                switch (transEvent.EventType)
                 {
                     case nameof(SchemePublishedEvent):
                     {
