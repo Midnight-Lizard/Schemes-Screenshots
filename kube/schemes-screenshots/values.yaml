@@ -53,5 +53,5 @@ env:
       "partition.assignment.strategy": "range",
       "enable.auto.commit": false,
       "auto.commit.interval.ms": 1000,
-      "auto.offset.reset": "earliest"
+      "auto.offset.reset": "latest"
     }
