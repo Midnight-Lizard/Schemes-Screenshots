@@ -25,7 +25,7 @@ spec:
           image: {{ .Values.image | quote }}
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: {{ .Values.service.internalPort }}
+            - containerPort: {{ .Values.containerPort }}
               protocol: TCP
           resources:
             requests:
@@ -34,14 +34,14 @@ spec:
           livenessProbe:
             httpGet:
               path: {{ .Values.livenessProbe.path }}
-              port: {{ .Values.service.internalPort }}
+              port: {{ .Values.containerPort }}
             initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
             timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
           readinessProbe:
             httpGet:
               path: {{ .Values.readinessProbe.path }}
-              port: {{ .Values.service.internalPort }}
+              port: {{ .Values.containerPort }}
             initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
             timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}

@@ -1,5 +1,6 @@
 replicaCount: 1
 image: schemes-screenshots:latest
+containerPort: 5000
 pullPolicy: IfNotPresent
 livenessProbe:
   path: /status/isalive
@@ -11,11 +12,6 @@ readinessProbe:
   initialDelaySeconds: 30
   periodSeconds: 20
   timeoutSeconds: 5
-service:
-  name: schemes-screenshots
-  type: NodePort
-  externalPort: 80
-  internalPort: 5000
 secrets:
   cloudinaryUrl: "base64 encoded 'cloudinary://clientId:clientSecrete@cloudName'"
 screenshotConfig:
