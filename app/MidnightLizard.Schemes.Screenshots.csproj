@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.2.1" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.2.6" />
     <PackageReference Include="CloudinaryDotNet" Version="1.6.0" />
     <PackageReference Include="Magick.NET-Q8-AnyCPU" Version="7.10.1" />
     <PackageReference Include="PuppeteerSharp" Version="1.11.1" />
